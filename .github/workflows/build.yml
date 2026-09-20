@@ -1,0 +1,27 @@
+name: 编译检查
+
+# 什么时候触发：推送到 main、向 main 发 PR、或手动点按钮
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: 用 gcc 编译并运行
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 编译 LinearList.c
+        working-directory: 线性表
+        run: gcc -Wall -Wextra -std=c17 -g LinearList.c -o LinearList
+
+      - name: 运行程序
+        working-directory: 线性表
+        run: ./LinearList
